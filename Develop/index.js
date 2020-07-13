@@ -5,6 +5,7 @@ const axios = require("axios");
 
 const readFileAsync = util.promisify(fs.readFile);
 const writeFileAsync = util.promisify(fs.writeFile);
+const appendFileAsync = util.promisify(fs.appendFile)
 
 // array of questions for user
 const questions = 
@@ -55,21 +56,50 @@ const questions =
     name: "gitHub",
 },
 ];
-prompt()
+
 
 function  prompt() {
- return inquirer.prompt(questions);
-}
-
-writeToFile ()
+  return inquirer.prompt(questions);
+  
+};
 
 // function to write README file
-function writeToFile(fileName, data) {
+function  writeInput (data) {
+    
+
+    return data.title + "\n ## Description \n" + data.description + "\n ## Installation Instructions \n" + data.installation +
+     "\n ## Usage Information\n" + data.usage + "\n ## License Information \n" + data.license + "\n ## Contribution Guidelines \n" + data.contribution +
+      "\n ## Testing Information\n" + data.test + "\n ## Contact Information \n" + data.contact +"\n" + data.gitHub;
+};
+
+function tableOf (data){
+    return `
+## Table of Contents
+  * [Description](#description)
+  * [Installation Instructions](#installation-instructions)
+  * [Usage Information](#usage-information)
+  * [Contribution Guidelines](#contribution-guidelines)
+  * [Testing Information](#testing-information)
+  * [License Information](#license-information)
+  * [Contact Information](#contact-information)
+`
 }
 
-// function to initialize program
-function init() {
 
+// function to initialize program
+async function init() {
+    try {
+    let file = "README.md"
+    const data = await prompt ();
+    const toc = await writeInput (data)
+    const userInput = await tableOf (data)
+    await writeFileAsync(file, userInput);
+    await appendFileAsync (file, toc);
+    await appendFileAsync (file, )
+    }
+    catch(err) {
+        console.log (err)
+    }
 }
 
 // function call to initialize program
