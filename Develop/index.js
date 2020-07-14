@@ -1,7 +1,6 @@
 const inquirer = require("inquirer");
 const fs = require("fs"); 
 const util = require("util");
-const axios = require("axios");
 
 const writeFileAsync = util.promisify(fs.writeFile);
 const appendFileAsync = util.promisify(fs.appendFile)
@@ -11,21 +10,11 @@ const licenses = [
         license1: "1",
         name: "Boost Software License 1.0",
         url: "[![License](https://img.shields.io/badge/License-Boost%201.0-lightblue.svg)](https://www.boost.org/LICENSE_1_0.txt)",
-        licenseInfo: "Permission is hereby granted, free of charge, to any person or organization" + 
-        "\n obtaining a copy of the software and accompanying documentation covered by" +
-        "\n this license (the 'Software') to use, reproduce, display, distribute," +
-        "\n execute, and transmit the Software, and to prepare derivative works of the" +
-        "\n Software, and to permit third-parties to whom the Software is furnished to" +
-        "\n do so, all subject to the following...",
-        
     },
     {
         license2: "2",
         name: "BSD 3-Clause License", 
         url: "[![License](https://img.shields.io/badge/License-BSD%203--Clause-blue.svg)](https://opensource.org/licenses/BSD-3-Clause)",
-        licenseInfo: "THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS 'AS IS' AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED."+
-        "\n IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.",
-
     }
 ]
 
@@ -94,7 +83,13 @@ function  writeInput (data) {
 };
 
 function tableOf (data){
-    return "# " + data.title + "\n" + `
+    let badge; if (data.license = licenses[0].name) {
+        badge = licenses[0].url}
+        else {
+            badge = licenses[1].url;
+        }
+    return "# " + data.title + "\n" + badge + "\n" + 
+    `
 ## Table of Contents
   * [Description](##description)
   * [Installation Instructions](##installation-instructions)
@@ -105,9 +100,6 @@ function tableOf (data){
   * [Contact Information](##contact-information)
 `
 }
-
-
-
 // function to initialize program
 async function init() {
     try {
